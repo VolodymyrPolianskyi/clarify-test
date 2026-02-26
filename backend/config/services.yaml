@@ -1,0 +1,24 @@
+parameters:
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Kernel.php'
+
+  App\Strategy\ShippingStrategyInterface: ~
+
+  App\Service\ShippingCalculatorService:
+    arguments:
+      $strategies: !tagged_iterator app.shipping_strategy
+
+  App\Strategy\TransCompanyStrategy:
+    tags: ['app.shipping_strategy']
+
+  App\Strategy\PackGroupStrategy:
+    tags: ['app.shipping_strategy']
